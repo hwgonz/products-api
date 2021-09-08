@@ -30,6 +30,9 @@ case class Test(products: Ref[Vector[Product]]) extends Persistence.Service[Prod
         Task.succeed(evalProducts(products.toList, vendor))
       )
     )
+
+  def getAllProducts: Task[List[Product]] =
+    products.get.flatMap(products => Task.succeed(products.toList))
 }
 
 object Test {

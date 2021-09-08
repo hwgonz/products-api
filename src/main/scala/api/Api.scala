@@ -51,6 +51,9 @@ final case class Api[R <: ProductPersistence](rootUri: String) {
 
         }
 
+      case GET -> Root =>
+        getAllProducts.foldM(_ => NotFound(), Ok(_))
+
     }
   }
 

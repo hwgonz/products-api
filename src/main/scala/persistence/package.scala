@@ -10,6 +10,7 @@ package object persistence {
     trait Service[A] {
       def getProduct(id: UUID): Task[A]
       def getProductsByVendor(vendor: String): Task[Seq[A]]
+      def getAllProducts: Task[Seq[A]]
       def createProduct(p: A): Task[A]
     }
   }
@@ -27,5 +28,8 @@ package object persistence {
 
   def createProduct(p: Product): RIO[ProductPersistence, Product] =
     RIO.accessM(_.get.createProduct(p))
+
+  def getAllProducts: RIO[ProductPersistence, Seq[Product]] =
+    RIO.accessM(_.get.getAllProducts)
 
 }

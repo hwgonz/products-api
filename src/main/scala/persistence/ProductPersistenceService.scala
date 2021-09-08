@@ -43,6 +43,11 @@ final class ProductPersistenceService(tnx: Transactor[Task]) extends Persistence
       .transact(tnx)
       .foldM(err => Task.fail(err), _ => Task.succeed(p))
 
+  def getAllProducts: Task[Seq[Product]] =
+    SQL.getAllProducts
+      .to[List]
+      .transact(tnx)
+
 }
 
 object ProductPersistenceService {
@@ -54,6 +59,9 @@ object ProductPersistenceService {
 
     def getProductsByVendor(vendor: String): Query0[Product] =
       sql""" SELECT * FROM Product WHERE vendor = $vendor """.query
+
+    def getAllProducts: Query0[Product] =
+      sql""" SELECT * FROM Product """.query
 
     def createProduct(product: Product): Update0 =
       sql"""INSERT INTO Product (id, name, price, vendor, expiration)
